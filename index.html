@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+      });
+
+      clinics.forEach(clinic => {
+
+        const marker = new google.maps.Marker({
+          position: {
+            lat: clinic.lat,
+            lng: clinic.lng
+          },
+          map: map,
+          title: clinic.name
+        });
+
+        const infoWindow = new google.maps.InfoWindow({
+          content: `
+            <div>
+              <h3>${clinic.name}</h3>
+              <p>Available Doses: ${clinic.doses}</p>
+              <a
+                href="https://www.google.com/maps/dir/?api=1&destination=${clinic.lat},${clinic.lng}"
+                target="_blank"
+              >
+                Navigate Here
+              </a>
+            </div>
+          `
+        });
+
+        marker.addListener("click", () => {
+          infoWindow.open(map, marker);
+        });
+
+      });
+    }
+
+    // User Current Location
+    function getUserLocation() {
+
+      if (navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(position => {
+
+          const userLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+
+          map.setCenter(userLocation);
+          map.setZoom(12);
+
+          new google.maps.Marker({
+            position: userLocation,
+            map: map,
+            title: "Your Location",
+          });
+
+        }, () => {
+          alert("Unable to access your location.");
+        });
+
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+
+  </script>
+
+  <!-- Replace YOUR_API_KEY with your actual API key -->
+  <script async
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+  </script>
+
+</body>
+</html>
